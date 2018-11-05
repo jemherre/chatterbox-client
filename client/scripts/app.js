@@ -22,6 +22,7 @@ var App = {
       // examine the response from the server request:
       console.log(data);
 
+      console.log(`this ${callback}`);
       callback();
     });
   },

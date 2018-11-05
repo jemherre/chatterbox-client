@@ -10,6 +10,10 @@ var FormView = {
     // Stop the browser from submitting the form
     event.preventDefault();
     
+    // create the message
+    Parse.create((data) => {
+      console.log(data);
+    });
     console.log('click!');
   },
 
