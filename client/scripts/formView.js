@@ -28,7 +28,7 @@ var FormView = {
       Messages[messageCounter++] = data;
     }
     console.log(Messages);
-    MessagesView.renderMessage();
+    MessagesView.renderMessage(data);
   },
 
   setStatus: function(active) {
