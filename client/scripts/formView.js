@@ -6,7 +6,7 @@ var FormView = {
   
 
   initialize: function() {
-    FormView.$form.on('submit', FormView.handleSubmit);
+    FormView.$form.on('submit', FormView.handleSubmit); //creates the event handler
     messageCounter = 1;
   },
 
@@ -28,6 +28,7 @@ var FormView = {
       Messages[messageCounter++] = data;
     }
     console.log(Messages);
+    MessagesView.renderMessage();
   },
 
   setStatus: function(active) {
