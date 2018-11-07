@@ -16,7 +16,10 @@ var FormView = {
     var data = {};
     data.username = App.username;
     data.text = FormView.$form.find('input[name=message]').val();
-    data.roomname = null;
+    var selectTag = document.getElementById("currentRoom"); // [0,1,2]
+    console.log(selectTag)
+    var selectedValue = selectTag.options[selectTag.selectedIndex].value;
+    data.roomname = selectedValue;
     
     // create the message
     Parse.create(data);

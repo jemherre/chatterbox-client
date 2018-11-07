@@ -7,7 +7,9 @@ var RoomsView = {
   initialize: function() {
     RoomsView.$button.on('click',RoomsView.getRoomName); //create event handler for adding room
     RoomsView.renderRoom(RoomsView.count); //create main(intial) room
-    $('#currentRoom').on('click',RoomsView.selectRoom);//create event handler that will 
+    // console.log(RoomsView.selectRoom);
+    // $('#currentRoom').attr('onchange', 'RoomsView.selectRoom');
+    $("#currentRoom").on('change',RoomsView.selectRoom);
   },
 
   //create template for select - options
@@ -19,11 +21,12 @@ var RoomsView = {
 
   //generates/displays rooms when clicked
   renderRoom: function(name) {
-    console.log("Render: ",name);
     var html = RoomsView.render({'roomName': name});
-    console.log(html);
     $(document).ready(function() { 
       RoomsView.$select.append(html);
+      // Create the event handler for highlighted option
+      //  $('#currentRoom').change(RoomsView.selectRoom);
+
     });  
   },
 
@@ -62,12 +65,35 @@ var RoomsView = {
 
   selectRoom: function() {
     console.log('selected room');
-    // var ddl = document.getElementById("currentRoom");
-    // var selectedValue = ddl.options[ddl.selectedIndex].value;
-    //    if (selectedValue == "0")
-    //   {
-    //    alert("Please select a card type");
-    //   }
+    //capture selected tag value
+    var selectTag = document.getElementById("currentRoom");
+    //option tag keeps track of highlight(selected) option 
+    var selectedRoom = selectTag.options[selectTag.selectedIndex].value;
+
+    //pull all messages from parse server with roomName
+    RoomsView.pullRooms((data) => {
+      // examine the response from the server request:
+      console.log(data);
+    });
+
+    //append the DOM with those messages
+
+
+  },
+
+  pullRooms: function(successCB, errorCB = null) { // data
+    $.ajax({
+      url: Parse.server,
+      type: 'GET',
+    //   data: { order: '-createdAt',
+    // keys: selectedRoom.toString()},
+    data: { order: '-createdAt' },
+      contentType: 'application/json',
+      success: successCB,
+      error: errorCB || function(error) {
+        console.error('chatterbox: Failed to fetch messages', error);
+      }
+    });
   }
 
 };
