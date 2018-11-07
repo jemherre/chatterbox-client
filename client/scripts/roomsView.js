@@ -2,11 +2,11 @@ var RoomsView = {
 
   $button: $('#rooms button'),
   $select: $('#rooms select'),
-  count: 0,  //room counter
+  selectedRoom : "0",  //room counter
 
   initialize: function() {
     RoomsView.$button.on('click',RoomsView.getRoomName); //create event handler for adding room
-    RoomsView.renderRoom(RoomsView.count); //create main(intial) room
+    RoomsView.renderRoom(RoomsView.selectedRoom); //create main(intial) room
     // console.log(RoomsView.selectRoom);
     // $('#currentRoom').attr('onchange', 'RoomsView.selectRoom');
     $("#currentRoom").on('change',RoomsView.selectRoom);
@@ -68,7 +68,7 @@ var RoomsView = {
     //capture selected tag value
     var selectTag = document.getElementById("currentRoom");
     //option tag keeps track of highlight(selected) option 
-    var selectedRoom = selectTag.options[selectTag.selectedIndex].value;
+    RoomsView.selectedRoom = (selectTag.options[selectTag.selectedIndex].value).toString();
 
     //pull all messages from parse server with roomName
     RoomsView.pullRooms((data) => {
@@ -83,11 +83,11 @@ var RoomsView = {
 
   pullRooms: function(successCB, errorCB = null) { // data
     $.ajax({
-      url: Parse.server,
+      // url: `${Parse.server} 'where={"roomname":"${RoomsView.selectedRoom}"}'`,
+    url: Parse.server,
       type: 'GET',
-    //   data: { order: '-createdAt',
-    // keys: selectedRoom.toString()},
-    data: { order: '-createdAt' },
+      data: { order: 'createdAt'},
+      data: `where={"roomname":"${RoomsView.selectedRoom}"}`,
       contentType: 'application/json',
       success: successCB,
       error: errorCB || function(error) {

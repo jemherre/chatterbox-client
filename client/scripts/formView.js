@@ -16,8 +16,8 @@ var FormView = {
     var data = {};
     data.username = App.username;
     data.text = FormView.$form.find('input[name=message]').val();
-    var selectTag = document.getElementById("currentRoom"); // [0,1,2]
-    console.log(selectTag)
+    var selectTag = document.getElementById("currentRoom");
+    //option tag keeps track of highlight(selected) option 
     var selectedValue = selectTag.options[selectTag.selectedIndex].value;
     data.roomname = selectedValue;
     
