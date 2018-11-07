@@ -2,7 +2,7 @@ var messageCounter = 0;
 
 var FormView = {
   
-  $form: $('form'),
+  $form: $('#send'),
   
 
   initialize: function() {
@@ -15,7 +15,7 @@ var FormView = {
     event.preventDefault();
     var data = {};
     data.username = App.username;
-    data.text = FormView.$form.find('input[type=text]').val();
+    data.text = FormView.$form.find('input[name=message]').val();
     data.roomname = null;
     
     // create the message
