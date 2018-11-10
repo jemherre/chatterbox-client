@@ -43,7 +43,7 @@ var RoomsView = {
     var popUpForm = `
     <form action="#" id="getName" method="post">
       <input type="text" name="roomName"/>
-      <button type="button"> _.escape(Enter Room Name)</button>
+      <button type="button"> Enter Room Name</button>
     </form>`;
     //maybe hide other form and make it re-appear after getting name
     $(document).ready(function(){
