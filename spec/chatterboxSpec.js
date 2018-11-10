@@ -73,12 +73,16 @@ describe('chatterbox', function() {
       };
       MessagesView.renderMessage(message);
       console.log($('#chats').children());
-      expect($('#chats').children().length).to.equal(1);
+      $(document).ready(function(){
+        expect($('#chats').children().length).to.equal(1);
+      });
     });
 
     it('should be able to add rooms to the DOM', function() {
       RoomsView.renderRoom('superLobby');
-      expect($('#rooms select').children().length).to.equal(1);
+      $(document).ready(function(){
+        expect($('#rooms select').children().length).to.equal(1);
+      });
     });
 
   });
@@ -100,27 +104,29 @@ describe('chatterbox', function() {
     });
 
     it('should add a room when clicking add', function() {
-      sinon.spy(Rooms, 'add');
+      //modified rooms and add to be set to our roomsView and getRoomName
+      sinon.spy(RoomsView, 'getRoomName');
       var prompt = window.prompt;
       window.prompt = sinon.stub().returns('testroom');
 
       App.initialize();
       $('#rooms').find('button').trigger('click');
-      expect(Rooms.add.called).to.be.true;
+      expect(RoomsView.getRoomName.called).to.be.true;
 
       window.prompt = prompt;
-      Rooms.add.restore();
+      RoomsView.getRoomName.restore();
     });
 
-    // it('should try to send a message upon clicking submit', function() {
-    //   sinon.spy(Parse, 'create');
+    it('should try to send a message upon clicking submit', function() {
+      sinon.spy(Parse, 'create');
 
-    //   App.initialize();
-    //   $('#message').val('Why so many Mel Brooks quotes?');
-    //   $('form .submit').trigger('submit');
-    //   expect(Parse.create.called).to.be.true;
-
-    //   Parse.create.restore();
-    // });
+      App.initialize();
+      $('#message').val('Why so many Mel Brooks quotes?');
+      $('form .submit').trigger('handleSubmit');
+      $(document).ready(function(){
+        expect(Parse.create.called).to.be.true;
+      });
+      Parse.create.restore();
+    });
   });
 });

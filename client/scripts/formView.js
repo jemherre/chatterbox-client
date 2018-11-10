@@ -8,6 +8,8 @@ var FormView = {
   initialize: function() {
     FormView.$form.on('submit', FormView.handleSubmit); //creates the event handler
     messageCounter = 1;
+    //TODO: maybe load all messages from server here first hence updating our form view?
+  
   },
 
   handleSubmit: function(event) {
@@ -17,7 +19,7 @@ var FormView = {
     data.username = App.username;
     data.text = FormView.$form.find('input[name=message]').val();
     var selectTag = document.getElementById("currentRoom");
-    //option tag keeps track of highlight(selected) option 
+    //option tag keeps track of highlight
     var selectedValue = selectTag.options[selectTag.selectedIndex].value;
     data.roomname = selectedValue;
     
@@ -32,6 +34,8 @@ var FormView = {
     }
     console.log(Messages);
     MessagesView.renderMessage(data);
+    //TODO: maybe also create an event handler when we select the username to add friend??
+    //or view all messages from that persoon??
   },
 
   setStatus: function(active) {

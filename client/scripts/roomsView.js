@@ -2,13 +2,19 @@ var RoomsView = {
 
   $button: $('#rooms button'),
   $select: $('#rooms select'),
-  selectedRoom : "0",  //room counter
+  selectedRoom : "0",  //main room name
 
   initialize: function() {
     RoomsView.$button.on('click',RoomsView.getRoomName); //create event handler for adding room
     RoomsView.renderRoom(RoomsView.selectedRoom); //create main(intial) room
-    // console.log(RoomsView.selectRoom);
-    // $('#currentRoom').attr('onchange', 'RoomsView.selectRoom');
+    //we will also have to render all rooms that are availuable in our server to be option :(
+    
+    //load all message pertaining to our main room
+    $(document).ready(function() {
+      RoomsView.pullAllRooms();
+      RoomsView.selectRoom();
+      
+    });
     $("#currentRoom").on('change',RoomsView.selectRoom);
   },
 
@@ -21,17 +27,20 @@ var RoomsView = {
 
   //generates/displays rooms when clicked
   renderRoom: function(name) {
-    var html = RoomsView.render({'roomName': name});
-    $(document).ready(function() { 
-      RoomsView.$select.append(html);
-      // Create the event handler for highlighted option
-      //  $('#currentRoom').change(RoomsView.selectRoom);
-
-    });  
+    if(Rooms[name] === undefined && name != undefined){ //only create option room if it doesn't exist
+      Rooms[name]= name;
+      var html = RoomsView.render({'roomName': name});
+      $(document).ready(function() { 
+        RoomsView.$select.append(html);
+        // Create the event handler for highlighted option
+        //  $('#currentRoom').change(RoomsView.selectRoom);
+      });  
+    }
   },
 
   //create pop-up form
   getRoomName: function(){
+    $("#getName").remove();//edge case if user accidentally presses addroom twice
     var popUpForm = `
     <form action="#" id="getName" method="post">
       <input type="text" name="roomName"/>
@@ -46,14 +55,14 @@ var RoomsView = {
       $('#getName button').on('click',RoomsView.enterRoomName);
       //create handler upon selecting room
     })
-    console.log("END");
+
   },
 
   enterRoomName: function(event){
     event.preventDefault();// do we need this??
     //access and save name into render room
    var newRoom = $('#getName').find('input[type=text]').val();
-   console.log("CHECK HERE>>>",newRoom);
+   console.log("NEW Room>>>",newRoom);
    RoomsView.renderRoom(newRoom);
     //remove form room tag and display message form
     $(document).ready(function(){
@@ -64,7 +73,7 @@ var RoomsView = {
   },
 
   selectRoom: function() {
-    console.log('selected room');
+    // console.log('selected room');
     //capture selected tag value
     var selectTag = document.getElementById("currentRoom");
     //option tag keeps track of highlight(selected) option 
@@ -73,25 +82,46 @@ var RoomsView = {
     //pull all messages from parse server with roomName
     RoomsView.pullRooms((data) => {
       // examine the response from the server request:
-      console.log(data);
+      // console.log(typeof data['results'].length, data);
+      //==> pullroom returns a list of objects contained in a results object {results: [ 0:{message1 in roomN}, 1:{message2 in roomN}, ....] }
+      var html = "";
+      for(var i = 0; i < data['results'].length; i++){
+        html += MessageView.render(data['results'][i]);
+      }
+      // console.log("new room messages: ",html)
+      //append the DOM with those messages
+      $(document).ready(function() { ``
+        //remove sub div elements and then reappend them
+        MessagesView.$chats.empty();
+        MessagesView.$chats.prepend(html);
+      });   
     });
-
-    //append the DOM with those messages
-
-
   },
 
   pullRooms: function(successCB, errorCB = null) { // data
     $.ajax({
-      // url: `${Parse.server} 'where={"roomname":"${RoomsView.selectedRoom}"}'`,
-    url: Parse.server,
+      url: Parse.server,
       type: 'GET',
-      data: { order: 'createdAt'},
-      data: `where={"roomname":"${RoomsView.selectedRoom}"}`,
+      data: {
+       where: {"roomname": RoomsView.selectedRoom},
+       order: '-createdAt'
+      },
       contentType: 'application/json',
       success: successCB,
       error: errorCB || function(error) {
         console.error('chatterbox: Failed to fetch messages', error);
+      }
+    });
+  },
+
+  //when loading page, pull all room channels on channel
+  pullAllRooms: function(){
+
+    Parse.readAll((data)=>{
+      //==> pullroom returns a list of objects contained in a results object {results: [ 0:{message1 in roomN}, 1:{message2 in roomN}, ....] }
+      for(var i = 0; i < data['results'].length; i++){
+        var name = data['results'][i]["roomname"];
+        RoomsView.renderRoom(name);
       }
     });
   }
