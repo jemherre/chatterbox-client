@@ -29,7 +29,6 @@ var MessagesView = {
     
     var name = this.innerHTML;
     name = _.escape(name);
-    console.log("name",name)
     // name = name.replace(/#/g,'amp');
     // console.log("name2",name)
     // $('#chats').children(`#${name}`).toggleClass('friend');
