@@ -15,10 +15,6 @@ var Parse = {
         console.error('chatterbox: Failed to create message', error);
       }
     });
-
-    console.log(message);
-    console.log(`print ${successCB}`);
-    console.log(`print ${errorCB}`);
     
   },
 

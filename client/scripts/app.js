@@ -19,7 +19,7 @@ var App = {
   fetch: function(callback = ()=>{}) { // fetch: function(callback) {}
     Parse.readAll((data) => {
       // examine the response from the server request:
-      console.log(data);
+      // console.log(data);
       callback();
     });
   },
