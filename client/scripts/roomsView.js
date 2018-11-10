@@ -90,13 +90,16 @@ var RoomsView = {
       //append the DOM with those messages
       $(document).ready(function() { ``
         //remove sub div elements and then reappend them
-        MessagesView.$chats.empty();
+        MessagesView.$chats.empty();//<<= always removes previous messages,losing css abilities
         MessagesView.$chats.prepend(html);
       });   
     });
+    //problem-need to be fixed possibly in the future: 
+    //friends get unfriended on refresh :(
+      //it needs to hold the sttribute after 
     setTimeout(() => {
       RoomsView.selectRoom();
-    }, 5000);
+    }, 10000);
   },
 
   pullRooms: function(successCB, errorCB = null) { // data
