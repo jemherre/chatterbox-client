@@ -34,8 +34,7 @@ var FormView = {
     }
     console.log(Messages);
     MessagesView.renderMessage(data);
-    //TODO: maybe also create an event handler when we select the username to add friend??
-    //or view all messages from that persoon??
+    FormView.$form[0].reset(); //clear users message input
   },
 
   setStatus: function(active) {

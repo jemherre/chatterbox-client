@@ -73,7 +73,6 @@ var RoomsView = {
   },
 
   selectRoom: function() {
-    // console.log('selected room');
     //capture selected tag value
     var selectTag = document.getElementById("currentRoom");
     // debugger;
