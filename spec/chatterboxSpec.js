@@ -72,7 +72,7 @@ describe('chatterbox', function() {
         roomname: 'lobby'
       };
       MessagesView.renderMessage(message);
-      console.log($('#chats').children());
+      // con
       $(document).ready(function(){
         expect($('#chats').children().length).to.equal(1);
       });
@@ -89,18 +89,22 @@ describe('chatterbox', function() {
 
   describe('events', function() {
     it('should add a friend upon clicking their username', function() {
-      sinon.spy(Friends, 'toggleStatus');
+      sinon.spy(MessagesView, 'toggleStatus');
 
-      App.initialize();
-      MessagesView.renderMessage({
-        username: 'Mel Brooks',
-        text: 'I didn\'t get a harumph outa that guy.!',
-        roomname: 'lobby'
+      $(document).ready(function(){
+        App.iinitialize();
+        MessagesView.renderMessage({
+          username: 'Mel Brooks',
+          text: 'I didn\'t get a harumph outa that guy.!',
+          roomname: 'lobby'
+          });
+          
+          $('#chats').find('.username').trigger('click');
+          expect(MessagesView.toggleStatus.called).to.be.true;
+          MessagesView.toggleStatus.restore();
       });
-      $('#chats').find('.username').trigger('click');
-      expect(Friends.toggleStatus.called).to.be.true;
-
-      Friends.toggleStatus.restore();
+      
+   
     });
 
     it('should add a room when clicking add', function() {

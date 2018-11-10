@@ -7,18 +7,7 @@ var MessagesView = {
     //MessagesView.$chat.on('click', MessagesView.renderMessage);
     $(document).ready(function() {
 
-    
-      $('#chats').on('click','.username', function(event){
-        var name = this.innerHTML;
-        console.log(event.currentTarget);
-        $('#chats').children(`#${name}`).toggleClass('friend');
-        // $(event.currentTarget).toggleClass('friend');
-    });
-
-    // $('#chats').on('click', function() {
-
-    //     $('username').toggleClass('friend'); 
-    //   });
+      $('#chats').on('click','.username', MessagesView.toggleStatus);
     });//create 
   },
 
@@ -34,7 +23,17 @@ var MessagesView = {
       MessagesView.$chats.prepend(html);
     });    
     
-  }
+  },
+
+  toggleStatus: function(){
+    var name = this.innerHTML;
+    $('#chats').children(`#${name}`).toggleClass('friend');
+    
+    var allUsers = document.getElementById("chats").querySelectorAll(`#${name}`);
+    for (var i = 0; i < allUsers.length; i++) {
+      allUsers[i].style.color !== "red" ? allUsers[i].style.color = "red" : allUsers[i].style.color = "black";
+    }
+ }
 
   //look for chat id on click
   //change attribute to friend

@@ -1,9 +1,10 @@
 var MessageView = {
 
-  render: _.template(`
+  render:
+    _.template(`
       <div class="chat"><!--
-      --><span id="<%=username%>" class="username" ><%=username%></span><!--
-      --><div><%=text%></div><!--
+      --><span id="<%=_.escape(username)%>" class="username" ><%=_.escape(username)%></span><!--
+      --><div><%=_.escape(text)%></div><!--
       --></div>
     `)
 

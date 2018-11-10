@@ -6,6 +6,7 @@ var RoomsView = {
 
   initialize: function() {
     RoomsView.$button.on('click',RoomsView.getRoomName); //create event handler for adding room
+    $("#currentRoom").on('change',RoomsView.selectRoom);
     RoomsView.renderRoom(RoomsView.selectedRoom); //create main(intial) room
     //we will also have to render all rooms that are availuable in our server to be option :(
     
@@ -13,15 +14,14 @@ var RoomsView = {
     $(document).ready(function() {
       RoomsView.pullAllRooms();
       RoomsView.selectRoom();
-      
     });
-    $("#currentRoom").on('change',RoomsView.selectRoom);
+    
   },
 
   //create template for select - options
   render: _.template(`
-  <option value="<%=roomName%>"><!--
-    --><%=roomName%><!--
+  <option value="<%=_.escape(roomName)%>"><!--
+    --><%=_.escape(roomName)%><!--
   --></option>`
   ),
 
@@ -44,7 +44,7 @@ var RoomsView = {
     var popUpForm = `
     <form action="#" id="getName" method="post">
       <input type="text" name="roomName"/>
-      <button type="button"> Enter Room Name</button>
+      <button type="button"> _.escape(Enter Room Name)</button>
     </form>`;
     //maybe hide other form and make it re-appear after getting name
     $(document).ready(function(){
@@ -76,6 +76,8 @@ var RoomsView = {
     // console.log('selected room');
     //capture selected tag value
     var selectTag = document.getElementById("currentRoom");
+    // debugger;
+    console.log("SELECT>> ",selectTag);
     //option tag keeps track of highlight(selected) option 
     RoomsView.selectedRoom = (selectTag.options[selectTag.selectedIndex].value).toString();
 
@@ -96,6 +98,9 @@ var RoomsView = {
         MessagesView.$chats.prepend(html);
       });   
     });
+    setTimeout(() => {
+      RoomsView.selectRoom();
+    }, 5000);
   },
 
   pullRooms: function(successCB, errorCB = null) { // data
