@@ -33,7 +33,6 @@ var RoomsView = {
       $(document).ready(function() { 
         RoomsView.$select.append(html);
         // Create the event handler for highlighted option
-        //  $('#currentRoom').change(RoomsView.selectRoom);
       });  
     }
   },
@@ -83,13 +82,11 @@ var RoomsView = {
     //pull all messages from parse server with roomName
     RoomsView.pullRooms((data) => {
       // examine the response from the server request:
-      // console.log(typeof data['results'].length, data);
       //==> pullroom returns a list of objects contained in a results object {results: [ 0:{message1 in roomN}, 1:{message2 in roomN}, ....] }
       var html = "";
       for(var i = 0; i < data['results'].length; i++){
         html += MessageView.render(data['results'][i]);
       }
-      // console.log("new room messages: ",html)
       //append the DOM with those messages
       $(document).ready(function() { ``
         //remove sub div elements and then reappend them
